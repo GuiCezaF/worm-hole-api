@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./www/src
+    container_name: up-it-app
+    ports:
+      - 3333:3333
+    command: pnpm run dev
+    networks:
+      - db-network
+
+  db:
+    image: postgres:15.3-alpine
+    container_name: up-it-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: up-it-db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - db-network
+
+  minio:
+    image: 'minio/minio:latest'
+    ports:
+      - '${FORWARD_MINIO_PORT:-9000}:9000'
+      - '${FORWARD_MINIO_CONSOLE_PORT:-9090}:9090'
+    environment:
+      MINIO_ROOT_USER: 'root'
+      MINIO_ROOT_PASSWORD: 'password'
+    volumes:
+      - 'minio:/data/minio'
+    command: minio     server /data/minio --console-address ":9090"
+
+volumes:
+  minio:
+    driver: local
+
+networks:
+  db-network:
+    driver: bridge

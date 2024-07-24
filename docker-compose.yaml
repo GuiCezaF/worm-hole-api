@@ -1,17 +1,17 @@
 version: '3.8'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./www/src
-    container_name: up-it-app
-    ports:
-      - 3333:3333
-    command: pnpm run dev
-    networks:
-      - db-network
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./www/src
+  #   container_name: up-it-app
+  #   ports:
+  #     - 3333:3333
+  #   command: pnpm run dev
+  #   networks:
+  #     - db-network
 
   db:
     image: postgres:15.3-alpine

@@ -7,9 +7,9 @@ import { env } from "../env";
 const app = fastify()
 app.get('/healt', () => {
   return "I'm Alive!"
-});
+}); 
 
-app.post('/upload', async () => {
+app.post('/uploads', async () => {
   const signedUrl = await getSignedUrl(
     s3,
     new PutObjectCommand({
